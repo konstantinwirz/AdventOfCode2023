@@ -1,4 +1,4 @@
-package dev.wirz.aoc2023._1;
+package dev.wirz.aoc2023.day1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
