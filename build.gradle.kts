@@ -1,5 +1,7 @@
 plugins {
     application
+
+    id("io.freefair.lombok") version "8.4"
 }
 
 repositories {
