@@ -4,9 +4,9 @@ import lombok.SneakyThrows;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 public class Main {
@@ -62,14 +62,12 @@ class RacesParser {
             throw new IllegalArgumentException("Invalid file format, expected same number of times and distances");
         }
 
-        var races = new ArrayList<Race>();
-        for (int i = 1; i < times.length; ++i) {
-            var time = Long.parseLong(times[i]);
-            var distance = Long.parseLong(distances[i]);
-            races.add(new Race(time, distance));
-        }
-
-        return races;
+        return IntStream.range(1, times.length)
+                .mapToObj(i -> {
+                    var time = Long.parseLong(times[i]);
+                    var distance = Long.parseLong(distances[i]);
+                    return new Race(time, distance);
+                }).toList();
     }
 }
 

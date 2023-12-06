@@ -27,3 +27,11 @@ application {
 tasks.named<Test>("test") {
     useJUnitPlatform()
 }
+
+tasks.compileJava {
+    options.compilerArgs.addAll(listOf("--enable-preview"))
+}
+
+tasks.withType<JavaExec>().configureEach {
+    jvmArgs("--enable-preview", "-ea")
+}
