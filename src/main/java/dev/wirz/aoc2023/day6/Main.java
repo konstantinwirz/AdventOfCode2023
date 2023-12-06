@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 public class Main {
 
@@ -15,11 +15,30 @@ public class Main {
     public static void main(String[] args) {
         var races = RacesParser.parse("day6/part1.txt");
 
+        // PART 1
+
         var resultPart1 = races.stream().map(race ->
                 race.options().stream().filter(opt -> opt > race.distance()).count()
         ).reduce(1L, (a, b) -> a * b);
 
+        assert resultPart1 == 32076L;
         System.out.println("PART 1 | RESULT = " + resultPart1);
+
+        // PART 2
+
+        var race = races.stream()
+                .reduce(new Race(0L, 0L), (a, b) ->
+                        new Race(glue(a.time(), b.time()), glue(a.distance(), b.distance())));
+
+        var resultPart2 = race.options().stream()
+                .filter(opt -> opt > race.distance()).count();
+
+        assert resultPart2 == 34278221L;
+        System.out.println("PART 2 | RESULT = " + resultPart2);
+    }
+
+    static long glue(long a, long b) {
+        return Long.parseLong(a + String.valueOf(b));
     }
 }
 
@@ -45,8 +64,8 @@ class RacesParser {
 
         var races = new ArrayList<Race>();
         for (int i = 1; i < times.length; ++i) {
-            var time = Integer.parseInt(times[i]);
-            var distance = Integer.parseInt(distances[i]);
+            var time = Long.parseLong(times[i]);
+            var distance = Long.parseLong(distances[i]);
             races.add(new Race(time, distance));
         }
 
@@ -54,10 +73,10 @@ class RacesParser {
     }
 }
 
-record Race(int time, int distance) {
+record Race(long time, long distance) {
 
-    List<Integer> options() {
-        return IntStream.range(0, time)
+    List<Long> options() {
+        return LongStream.range(0, time)
                 .map(i -> i * (time - i)).boxed()
                 .toList();
     }
